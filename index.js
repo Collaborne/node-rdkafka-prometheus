@@ -88,7 +88,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				name: `${namePrefix}rdkafka_broker_outbuf_cnt`,
 				labelNames: brokerLabelNames,
 			}),
-			BROKER_OUTBUF_MSG_CNG: makeRdkafkaGauge({
+			BROKER_OUTBUF_MSG_CNT: makeRdkafkaGauge({
 				help: 'Number of messages in outbuf_cnt',
 				name: `${namePrefix}rdkafka_broker_outbuf_msg_cnt`,
 				labelNames: brokerLabelNames,
@@ -98,7 +98,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				name: `${namePrefix}rdkafka_broker_waitresp_cnt`,
 				labelNames: brokerLabelNames,
 			}),
-			BROKER_WAITRESP_CNT_MAX: makeRdkafkaGauge({
+			BROKER_WAITRESP_MSG_CNT: makeRdkafkaGauge({
 				help: 'Number of messages in waitresp_cnt',
 				name: `${namePrefix}rdkafka_broker_waitresp_msg_cnt`,
 				labelNames: brokerLabelNames,
