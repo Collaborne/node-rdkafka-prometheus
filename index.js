@@ -87,7 +87,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				labelNames: globalLabelNames
 			}),
 			METADATA_CACHE_CNT: makeRdKafkaCounter({
-				help: 'See https://github.com/edenhill/librdkafka/issues/1701',
+				help: 'Number of topics in the metadata cache',
 				name: `${namePrefix}rdkafka_metadata_cache_cnt`,
 				labelNames: globalLabelNames
 			}),
