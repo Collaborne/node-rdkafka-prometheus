@@ -505,7 +505,9 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				// Ignore: Part of the topic labels
 				break;
 			case 'partitions':
-				this._translateRdkafkaTopicPartitionStats(key, topicStats[key], topicLabels);
+				for (const topicPartitionId of Object.keys(topicStats[key])) {
+					this._translateRdkafkaTopicPartitionStats(key, topicStats[key][topicPartitionId], topicLabels);
+				}
 				break;
 			default:
 				this._translateRdkafkaStat(`topic_${key}`, topicStats[key], topicLabels);
