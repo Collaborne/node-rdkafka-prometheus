@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
 const prometheus = require('prom-client');
-const logger = require('log4js').getLogger('@collaborne/kafka-message-client/monitoring/rdkafka');
+const logger = require('log4js').getLogger('node-rdkafka-prometheus');
 
 /**
  * @typedef {Object} Options
