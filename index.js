@@ -46,6 +46,16 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 		/* eslint-disable sort-keys */
 		this.metrics = {
 			// Top-level metrics
+			TS: makeRdKafkaCounter({
+				help: 'librdkafka\'s internal monotonic clock (micro seconds)',
+				name: `${namePrefix}rdkafka_ts`,
+				labelNames: globalLabelNames
+			}),
+			TIME: makeRdKafkaCounter({
+				help: 'Wall clock time in seconds since the epoch',
+				name: `${namePrefix}rdkafka_time`,
+				labelNames: globalLabelNames
+			}),
 			REPLYQ: makeRdkafkaGauge({
 				help: 'Number of ops waiting in queue for application to serve with rd_kafka_poll()',
 				name: `${namePrefix}rdkafka_replyq`,
@@ -70,6 +80,16 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				help: 'Threshold: maximum total size of messages allowed',
 				name: `${namePrefix}rdkafka_msg_size_max`,
 				labelNames: globalLabelNames,
+			}),
+			SIMPLE_CNT: makeRdkafkaGauge({
+				help: 'Internal tracking of legacy vs new consumer API state',
+				name: `${namePrefix}rdkafka_simple_cnt`,
+				labelNames: globalLabelNames
+			}),
+			METADATA_CACHE_CNT: makeRdKafkaCounter({
+				help: 'See https://github.com/edenhill/librdkafka/issues/1701',
+				name: `${namePrefix}rdkafka_metadata_cache_cnt`,
+				labelNames: globalLabelNames
 			}),
 
 			// Per-Broker metrics
@@ -147,6 +167,11 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				help: 'Total number of unmatched correlation ids in response (typically for timed out requests)',
 				name: `${namePrefix}rdkafka_broker_rxcorriderrs`,
 				labelNames: brokerLabelNames,
+			}),
+			BROKER_RXPARTIAL: makeRdKafkaCounter({
+				help: 'Total number of partial messagesets received',
+				name: `${namePrefix}rdkafka_broker_rxpartial`,
+				labelNames: brokerLabelNames
 			}),
 			BROKER_ZBUF_GROW: makeRdKafkaCounter({
 				help: 'Total number of decompression buffer size increases',
