@@ -497,6 +497,9 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 					}
 				});
 				break;
+			case 'commited_offset':
+				// Ignore: see https://github.com/edenhill/librdkafka/issues/80
+				break;
 			default:
 				this._translateRdkafkaStat(`topic_partition_${key}`, topicPartitionStats[key], topicPartitionLabels);
 				break;
