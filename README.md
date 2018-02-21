@@ -1,4 +1,4 @@
-# node-rdkafka-prometheus
+# node-rdkafka-prometheus [![Build Status](https://travis-ci.org/Collaborne/node-rdkafka-prometheus.svg?branch=master)](https://travis-ci.org/Collaborne/node-rdkafka-prometheus)
 
 Helper for exposing node-rdkafka statistics through prometheus
 
