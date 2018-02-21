@@ -322,7 +322,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				labelNames: topicPartitionLabelNames,
 			}),
 			TOPIC_PARTITION_COMMITTED_OFFSET: makeRdkafkaGauge({
-				help: 'LAst committed offset',
+				help: 'Last committed offset',
 				name: `${namePrefix}rdkafka_topic_partition_committed_offset`,
 				labelNames: topicPartitionLabelNames,
 			}),
