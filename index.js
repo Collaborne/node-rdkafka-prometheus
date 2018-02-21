@@ -404,7 +404,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 			}
 		} else if (!this.warnedUnknownMetrics.has(key)) {
 			this.warnedUnknownMetrics.add(key);
-			logger.warn(`Unknown metric ${key}`);
+			logger.warn(`Unknown metric ${key} (labels ${JSON.stringify(labels)})`);
 		}
 	}
 
