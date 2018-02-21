@@ -293,7 +293,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 			}),
 			TOPIC_PARTITION_FETCHQ_SIZE: makeRdkafkaGauge({
 				help: 'Bytes in fetchq',
-				name: `${namePrefix}rdkafka_topic_partition_fetchq_bytes`,
+				name: `${namePrefix}rdkafka_topic_partition_fetchq_size`,
 				labelNames: topicPartitionLabelNames,
 			}),
 			TOPIC_PARTITION_FETCH_STATE: makeRdkafkaGauge({
