@@ -74,7 +74,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 
 			// Per-Broker metrics
 			BROKER_STATE: makeRdkafkaGauge({
-				help: 'Broker state (0 = UP)',
+				help: 'Broker state (0 = UP, 1 = DOWN)',
 				name: `${namePrefix}rdkafka_broker_state`,
 				labelNames: brokerLabelNames,
 			}),
@@ -449,6 +449,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				this._translateRdkafkaStat(`broker_${key}`, brokerStats[key], brokerLabels, state => {
 					switch (state) {
 					case 'UP': return 0;
+					case 'DOWN': return 1;
 					default:
 						logger.warn(`Cannot map rdkafka broker state ${state} to prometheus value`);
 						return -1;
