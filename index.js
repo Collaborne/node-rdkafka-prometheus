@@ -385,6 +385,11 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 		};
 		/* eslint-enable sort-keys */
 		this.extraLabels = extraLabels;
+
+		/**
+		 * Set of names of metrics that were unknown and we have warned the user about.
+		 */
+		this.warnedUnknownMetrics = new Set();
 	}
 
 	_translateRdkafkaStat(key, value, labels, valueMapper = v => v) {
@@ -397,6 +402,9 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				// FIXME: prometheus.Counter doesn't have a "set value to", but only a "inc value by".
 				logger.warn(`Cannot determine how to observice metric ${metric.name}`);
 			}
+		} else if (!this.warnedUnknownMetrics.has(key)) {
+			this.warnedUnknownMetrics.add(key);
+			logger.warn(`Unknown metric ${key}`);
 		}
 	}
 
