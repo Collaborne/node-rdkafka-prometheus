@@ -14,5 +14,15 @@
 		"sourceType": "module"
 	},
 
-	"extends": "eslint-config-collaborne"
+	"extends": "eslint-config-collaborne",
+
+	"overrides": [
+		{
+			"files": "test/**/*.spec.js",
+
+			"env": {
+				"mocha": true
+			}
+		}
+	]
 }
