@@ -276,9 +276,9 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				name: `${namePrefix}rdkafka_topic_partition_msgq_bytes`,
 				labelNames: topicPartitionLabelNames,
 			}),
-			TOPIC_PARTITION_XMIT_MSGQ: makeRdkafkaGauge({
+			TOPIC_PARTITION_XMIT_MSGQ_CNT: makeRdkafkaGauge({
 				help: 'Number of messages ready to be produced in transmit queue',
-				name: `${namePrefix}rdkafka_topic_partition_xmit_msgq`,
+				name: `${namePrefix}rdkafka_topic_partition_xmit_msgq_cnt`,
 				labelNames: topicPartitionLabelNames,
 			}),
 			TOPIC_PARTITION_XMIT_MSGQ_BYTES: makeRdkafkaGauge({
