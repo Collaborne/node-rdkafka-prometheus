@@ -1,6 +1,6 @@
 {
   "name": "node-rdkafka-prometheus",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Helper for exposing node-rdkafka statistics through prometheus",
   "main": "index.js",
   "scripts": {
