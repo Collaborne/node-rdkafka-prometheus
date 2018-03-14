@@ -11,6 +11,15 @@ const logger = require('log4js').getLogger('node-rdkafka-prometheus');
  */
 
 /**
+ * Topic fetch states
+ *
+ * The order matches the order in rdkafka's `rd_kafka_fetch_states`.
+ *
+ * See https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_partition.c rd_kafka_fetch_states
+ */
+const FETCH_STATES = ['none', 'stopping', 'stopped', 'offset-query', 'offset-wait', 'active'];
+
+/**
  * A "metric" that observes rdkafka statistics
  */
 class RdkafkaStats { // eslint-disable-line lines-before-comment
@@ -322,7 +331,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				labelNames: topicPartitionLabelNames,
 			}),
 			TOPIC_PARTITION_FETCH_STATE: makeRdkafkaGauge({
-				help: 'Consumer fetch state for this partition (0 = none, 1 = active)',
+				help: `Consumer fetch state for this partition (${FETCH_STATES.map((value, index) => `${index} = ${value}`).join(',')})`,
 				name: `${namePrefix}rdkafka_topic_partition_fetch_state`,
 				labelNames: topicPartitionLabelNames,
 			}),
@@ -513,13 +522,11 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				break;
 			case 'fetch_state':
 				this._translateRdkafkaStat(`topic_partition_${key}`, topicPartitionStats[key], topicPartitionLabels, state => {
-					switch (state) {
-					case 'none': return 0;
-					case 'active': return 1;
-					default:
+					const value = FETCH_STATES.indexOf(state);
+					if (value === -1) {
 						logger.warn(`Cannot map rdkafka topic partition fetch state '${state}' to prometheus value`);
-						return -1;
 					}
+					return value;
 				});
 				break;
 			case 'commited_offset':
