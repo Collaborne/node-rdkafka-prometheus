@@ -20,6 +20,15 @@ const logger = require('log4js').getLogger('node-rdkafka-prometheus');
 const FETCH_STATES = ['none', 'stopping', 'stopped', 'offset-query', 'offset-wait', 'active'];
 
 /**
+ * Broker states
+ *
+ * The order matches the order in rdkafka's `rd_kafka_broker_state_names`.
+ *
+ * @see https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_broker.c rd_kafka_broker_state_names
+ */
+const BROKER_STATES = ['INIT', 'DOWN', 'CONNECT', 'AUTH', 'UP', 'UPDATE', 'APIVERSION_QUERY', 'AUTH_HANDSHAKE'];
+
+/**
  * A "metric" that observes rdkafka statistics
  */
 class RdkafkaStats { // eslint-disable-line lines-before-comment
@@ -103,7 +112,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 
 			// Per-Broker metrics
 			BROKER_STATE: makeRdkafkaGauge({
-				help: 'Broker state (0 = DOWN, 1 = UP)',
+				help: `Broker state (${BROKER_STATES.map((value, index) => `${index} = ${value}`).join(',')})`,
 				name: `${namePrefix}rdkafka_broker_state`,
 				labelNames: brokerLabelNames,
 			}),
@@ -489,13 +498,11 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 				break;
 			case 'state':
 				this._translateRdkafkaStat(`broker_${key}`, brokerStats[key], brokerLabels, state => {
-					switch (state) {
-					case 'DOWN': return 0;
-					case 'UP': return 1;
-					default:
+					const value = BROKER_STATES.indexOf(state);
+					if (value === -1) {
 						logger.warn(`Cannot map rdkafka broker state '${state}' to prometheus value`);
-						return -1;
 					}
+					return value;
 				});
 				break;
 			default:
