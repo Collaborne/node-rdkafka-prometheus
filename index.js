@@ -484,7 +484,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 					case 'DOWN': return 0;
 					case 'UP': return 1;
 					default:
-						logger.warn(`Cannot map rdkafka broker state ${state} to prometheus value`);
+						logger.warn(`Cannot map rdkafka broker state '${state}' to prometheus value`);
 						return -1;
 					}
 				});
@@ -517,7 +517,7 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 					case 'none': return 0;
 					case 'active': return 1;
 					default:
-						logger.warn(`Cannot map rdkafka topic partition fetch state ${state} to prometheus value`);
+						logger.warn(`Cannot map rdkafka topic partition fetch state '${state}' to prometheus value`);
 						return -1;
 					}
 				});
