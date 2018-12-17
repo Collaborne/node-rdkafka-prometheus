@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Collaborne/node-rdkafka-prometheus#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.0",
-    "prom-client": "^10.2.2"
+    "prom-client": "^11.2.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
