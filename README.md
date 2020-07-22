@@ -2,6 +2,10 @@
 
 Helper for exposing node-rdkafka statistics through prometheus
 
+## Unmaintained!
+
+[We](https://github.com/Collaborne) are no longer using [node-rdkafka](https://github.com/Blizzard/node-rdkafka), and are therefore not planning to add any features to this. We will still try to merge PRs to the best of our ability, of course.
+
 ## Usage
 
 ```js
