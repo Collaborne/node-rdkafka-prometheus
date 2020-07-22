@@ -22,9 +22,10 @@ stream.consumer.on('event.stats', msg => {
 
 ## License
 
-    This software is licensed under the Apache 2 license, quoted below.
+This software is licensed under the Apache 2 license, quoted below.
 
-    Copyright 2011-2018 Collaborne B.V. <http://github.com/Collaborne/>
+```license
+    Copyright 2011-2020 Collaborne B.V. <http://github.com/Collaborne/>
 
     Licensed under the Apache License, Version 2.0 (the "License"); you may not
     use this file except in compliance with the License. You may obtain a copy of
@@ -37,3 +38,4 @@ stream.consumer.on('event.stats', msg => {
     WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
     License for the specific language governing permissions and limitations under
     the License.
+```
