@@ -35,9 +35,17 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 	/**
 	 * Create the collector
 	 *
-	 * @param {Options} options options for the collector
+	 * @param {Object} options options for the collector
+	 * @param {Object} options.extraLabels
+	 * 	Default extra labels to set on all metrics. The values of these labels are overridable
+	 * 	when calling observe(). All potential extra label keys must be declared here before
+	 *	they are used when calling observe.
+	 * @param {string} options.namePrefix
+	 * 	If given, each metric name will be prefixed with this.
+	 * @param {Array<Object>} options.registers
+	 * 	Array of prom-client registers to use. Default is to use the prom-client global register.
 	 */
-	constructor(options) {
+	constructor(options={}) {
 		const {extraLabels, namePrefix, registers} = Object.assign({
 			extraLabels: {},
 			namePrefix: '',
@@ -574,11 +582,16 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 		}
 	}
 
-	_translateRdkafkaStats(stats) {
-		const globalLabels = Object.assign({}, this.extraLabels, {
-			handle: stats.name,
-			type: stats.type
-		});
+	_translateRdkafkaStats(stats, extraLabels = {}) {
+		const globalLabels = Object.assign(
+			{},
+			this.extraLabels,
+			{
+				handle: stats.name,
+				type: stats.type
+			},
+			extraLabels
+		);
 		for (const key of Object.keys(stats)) {
 			switch (key) {
 			case 'name':
@@ -610,11 +623,24 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 	 *
 	 * This internally translates the statistics into many prometheus metrics.
 	 *
-	 * @param {object} stats rdkafka raw statistics
+	 * @param {object} stats rdkafka raw statistics 
+	 * @param {object} extraLabels keys must have already been declared when instantiating this RdkafkaStats instance.
 	 * @return {void}
 	 */
-	observe(stats) {
-		this._translateRdkafkaStats(stats);
+	observe(stats, extraLabels = {}) {
+		const allowedExtraLables = Object.keys(this.extraLabels);
+		// make a copy of extraLabels as we might mutate it.
+		extraLabels = Object.assign({}, extraLabels);
+		for (labelKey in Object.keys(extraLabels)) {
+			if (!allowedExtraLables.includes(labelKey)) {
+				logger.warn(
+					`label '${labelKey}' was not declared in extraLabels when RdkafkaStats was instantiated, ignoring.`
+				);
+				delete extraLabels[labelKey];
+			}
+		}
+
+		this._translateRdkafkaStats(stats, extraLabels = {});
 	}
 }
 
