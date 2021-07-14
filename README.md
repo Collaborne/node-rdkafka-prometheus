@@ -13,8 +13,13 @@ const RdkafkaStats = require('node-rdkafka-prometheus');
 const prometheus = require('prom-client');
 
 const rdkafkaStats = new RdkafkaStats({
-  extraLabels = {my_custom_label: 'label_value'},  // optional
-  namePrefix = 'metric_name_prefix'  // optional
+  // It is recommended that you pass in your require of prom-client to
+  // RdkafkaStats, as prom-client does not work well when it is required
+  // more than once in the same process.
+  // If you don't provide this, RdkafkaStats will require('prom-client') itself.
+  prometheus: prometheus, // optional
+  extraLabels: {my_custom_label: 'label_value'},  // optional
+  namePrefix: 'metric_name_prefix'  // optional
   // registers: [prometheus.register] // optional, this is the default.
 })
 
@@ -22,7 +27,7 @@ const rdkafkaStats = new RdkafkaStats({
 const stream = rdkafka.KafkaConsumer.createReadStream({'statistics.interval.ms': 1000});
 stream.consumer.on('event.stats', msg => {
   const stats = JSON.parse(msg.message);
-  // Optional: override the  default label value for any declared extraLabels.
+  // Optional: override the default label value for any declared extraLabels.
   // If you use extraLabels here, the keys must have already been declared
   // in the extraLables RdkafaStats contructor option.
   const extraLabels = { my_custom_label: 'special_label_value' };

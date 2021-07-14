@@ -1,7 +1,9 @@
 /* eslint-disable max-lines */
 
-const prometheus = require('prom-client');
 const logger = require('@log4js-node/log4js-api').getLogger('node-rdkafka-prometheus');
+
+// prom-client, set in RdkafkaStats constructor.
+let prometheus;
 
 /**
  * @typedef {Object} Options
@@ -28,6 +30,7 @@ const FETCH_STATES = ['none', 'stopping', 'stopped', 'offset-query', 'offset-wai
  */
 const BROKER_STATES = ['INIT', 'DOWN', 'CONNECT', 'AUTH', 'UP', 'UPDATE', 'APIVERSION_QUERY', 'AUTH_HANDSHAKE'];
 
+
 /**
  * A "metric" that observes rdkafka statistics
  */
@@ -36,6 +39,11 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 	 * Create the collector
 	 *
 	 * @param {Object} options options for the collector
+	 * @param {Object} options.prometheus
+	 * 	prom-client. Pass this in directly from your application if your app
+	 *  requires prom-client itself.  prom-client won't work if it is required
+	 *  multiple times in the same process.
+	 *  https://github.com/siimon/prom-client/issues/199#issuecomment-556908200
 	 * @param {Object} options.extraLabels
 	 * 	Default extra labels to set on all metrics. The values of these labels are overridable
 	 * 	when calling observe(). All potential extra label keys must be declared here before
@@ -46,6 +54,12 @@ class RdkafkaStats { // eslint-disable-line lines-before-comment
 	 * 	Array of prom-client registers to use. Default is to use the prom-client global register.
 	 */
 	constructor(options={}) {
+		// If options.prometheus is not provided, and is not already set,
+		// go ahead and required it ourselves.  This will only work
+		// if this is the only place in this app that is requiring prom-client.
+		prometheus = prometheus || options.prometheus || require('prom-client');
+		delete options.prometheus;
+
 		const {extraLabels, namePrefix, registers} = Object.assign({
 			extraLabels: {},
 			namePrefix: '',
